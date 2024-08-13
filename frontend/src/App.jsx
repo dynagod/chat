@@ -17,16 +17,20 @@ function App() {
 
   return (
     <>
-      <h1>Hey there</h1>
-      <p>Users: {users.length}</p>
+      <div className='bg-zinc-900 text-white h-screen'>
+      <h1 className='bg-green-500 text-4xl text-center p-4'>Hey there</h1>
+      <p className='text-red-800 text-2xl mt-6 text-center'>Users: {users.length}</p>
 
+      <div className='flex justify-around'>
       {
         users.map((user) => (
           <div key={user.id}>
-            <h3>{user.name} {user.admin ? "#": ""}</h3>
+            <h3 className='text-blue-800'>{user.name} {user.admin ? "#": ""}</h3>
           </div>
         ))
       }
+      </div>
+      </div>
     </>
   )
 }
