@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
 import axios from 'axios'
+import Header from './components/entry_page/Header'
 
 function App() {
   const [users, setUsers] = useState([])
@@ -17,20 +18,7 @@ function App() {
 
   return (
     <>
-      <div className='bg-zinc-900 text-white h-screen'>
-      <h1 className='bg-green-500 text-4xl text-center p-4'>Hey there</h1>
-      <p className='text-red-800 text-2xl mt-6 text-center'>Users: {users.length}</p>
-
-      <div className='flex justify-around'>
-      {
-        users.map((user) => (
-          <div key={user.id}>
-            <h3 className='text-blue-800'>{user.name} {user.admin ? "#": ""}</h3>
-          </div>
-        ))
-      }
-      </div>
-      </div>
+      <Header />
     </>
   )
 }
