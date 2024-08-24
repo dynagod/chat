@@ -1,17 +1,42 @@
+import axios from 'axios';
 import React from 'react'
 import { useState } from 'react'
+import { toast } from 'react-toastify';
 
 function Login() {
   const [show, setShow] = useState(false)
+  
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+
+    axios.post('/api/v1/user/login', formData)
+      .then((response) => {
+        toast.success(response.data.message)
+        console.log(`Login successfull: ${response.data}`)
+      })
+      .catch((error) => {
+        if (error.response) {
+          toast.error(`Error: ${error.response.data.message}`);
+          console.error('Error during login:', error.response.data.message);
+        } else if (error.request) {
+          toast.error('Error: No response received from server');
+          console.error('Error during login:', 'No response received from server');
+        } else {
+          toast.error(`Error: ${error.message}`);
+          console.error('Error during login:', error.message);
+        }
+      })
+  } 
 
   return (
     <div className='px-5 w-full'>
-        <form action="">
+        <form onSubmit={handleSubmit} method='post'>
           <div className='mt-5'>
             <label htmlFor="email">
               <div>Email <span className='text-red-500'>*</span></div>
             </label>
-            <input id='email' name='email' type="email" placeholder='Enter your email' className='outline-none text-xl rounded-lg bg-zinc-500 w-full p-2' required />
+            <input id='email' name='email' type="email" placeholder='Enter your email' className='outline-none text-xl rounded-lg bg-zinc-500 w-full p-2'/>
           </div>
 
           <div className='mt-5'>
@@ -24,7 +49,7 @@ function Login() {
                   {show ? <i className="fa-regular fa-eye-slash"></i> : <i className="fa-regular fa-eye"></i>}
                 </button>
               </span>
-              <input id='password' name='password' type={show? "text" : "password"} placeholder='Enter your password' className='outline-none text-xl rounded-lg bg-zinc-500 w-full p-2' required />
+              <input id='password' name='password' type={show? "text" : "password"} placeholder='Enter your password' className='outline-none text-xl rounded-lg bg-zinc-500 w-full p-2'/>
             </div>
           </div>
 
