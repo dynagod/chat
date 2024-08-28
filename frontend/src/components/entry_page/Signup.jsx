@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 function Signup() {
   const [show, setShow] = useState(false)
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -12,8 +14,9 @@ function Signup() {
   
     axios.post('/api/v1/user/signup', formData)
       .then((response) => {
-        toast.success(response.data.message);
+        setTimeout(() => toast.success(response.data.message), 1000);
         console.log('Signup successful:', response.data);
+        navigate('/chat');
       })
       .catch((error) => {
         if (error.response) {
@@ -32,7 +35,7 @@ function Signup() {
   return (
     <div className='px-5 w-full'>
         <form onSubmit={handleSubmit} encType='multipart/form-data' method='post'>
-        <div className='mt-5'>
+          <div className='mt-5'>
             <label htmlFor="username">
               <div>User Name <span className='text-red-500'>*</span></div>
             </label>

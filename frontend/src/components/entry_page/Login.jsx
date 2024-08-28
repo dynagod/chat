@@ -1,19 +1,25 @@
 import axios from 'axios';
-import React from 'react'
-import { useState } from 'react'
-import { toast } from 'react-toastify';
+import React, { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Login() {
   const [show, setShow] = useState(false)
+  const navigate = useNavigate()
   
   const handleSubmit = (event) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
+    const formData = {
+      email: event.target.email.value,
+      password: event.target.password.value
+    }
 
     axios.post('/api/v1/user/login', formData)
       .then((response) => {
-        toast.success(response.data.message)
+        setTimeout(() => toast.success(response.data.message), 1000)
         console.log(`Login successfull: ${response.data}`)
+        navigate('/chat')
       })
       .catch((error) => {
         if (error.response) {
@@ -45,7 +51,7 @@ function Login() {
             </label>
             <div className="relative">
               <span className='absolute right-0 text-xl p-2'>
-                <button onClick={() => setShow(!show)}>
+                <button type='button' onClick={() => setShow(!show)}>
                   {show ? <i className="fa-regular fa-eye-slash"></i> : <i className="fa-regular fa-eye"></i>}
                 </button>
               </span>
@@ -54,9 +60,23 @@ function Login() {
           </div>
 
           <div className='mt-5'>
-            <input type="submit" value='Sign Up' className='text-2xl rounded-full bg-blue-900 w-full p-2 cursor-pointer' />
+            <input type="submit" value='Login' className='text-2xl rounded-full bg-blue-900 w-full p-2 cursor-pointer' />
           </div>
         </form>
+
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          limit={1}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
     </div>
   )
 }

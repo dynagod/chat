@@ -1,6 +1,7 @@
 import mongoose, {Schema} from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { ApiError } from "../utils/ApiError.js";
 
 const userSchema = new Schema(
     {
@@ -60,30 +61,38 @@ userSchema.methods.isPasswordCorrect = async function (password){
 }
 
 userSchema.methods.generateAccessToken = function () {
-    return jwt.sign(
-        {
-            _id: this._id,
-            username: this.username,
-            email: this.email,
-            name: this.name,
-        },
-        process.env.ACCESS_TOKEN_SECRET,
-        {
-            expiresIn: ACCESS_TOKEN_EXPIRY
-        }
-    )
+    try {
+        return jwt.sign(
+            {
+                _id: this._id,
+                username: this.username,
+                email: this.email,
+                name: this.name,
+            },
+            process.env.ACCESS_TOKEN_SECRET,
+            {
+                expiresIn: process.env.ACCESS_TOKEN_EXPIRY
+            }
+        )
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Error while generating access token")
+    }
 }
 
 userSchema.methods.generateRefreshToken = function () {
-    return jwt.sign(
-        {
-            _id: this._id
-        },
-        REFRESH_TOKEN_SECRET,
-        {
-            expiresIn: REFRESH_TOKEN_EXPIRY
-        }
-    )
+    try {
+        return jwt.sign(
+            {
+                _id: this._id
+            },
+            process.env.REFRESH_TOKEN_SECRET,
+            {
+                expiresIn: process.env.REFRESH_TOKEN_EXPIRY
+            }
+        )
+    } catch (error) {
+        throw new ApiError(500, error.message || "Error while generating refresh token")
+    }
 }
 
 export const User = mongoose.model("User", userSchema)

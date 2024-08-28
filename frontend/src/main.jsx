@@ -1,15 +1,17 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Login from './components/entry_page/login.jsx'
+import Login from './components/entry_page/Login.jsx'
 import Signup from './components/entry_page/Signup.jsx'
 import Header from './components/entry_page/Header.jsx'
+import Home from './components/entry_page/Home.jsx'
+import Chat from './components/chat_page/Chat.jsx'
+import ProtectedRoute from './components/ProtectedRoute.jsx'
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/user',
     element: <Header />,
     children: [
       {
@@ -21,6 +23,18 @@ const router = createBrowserRouter([
         element: <Signup />
       }
     ]
+  },
+  {
+    path: '/',
+    element: <Home />
+  },
+  {
+    path: '/chat',
+    element: (
+      <ProtectedRoute>
+        <Chat />
+      </ProtectedRoute>
+    )
   }
 ])
 
