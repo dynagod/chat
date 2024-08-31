@@ -8,6 +8,7 @@ import Header from './components/entry_page/Header.jsx'
 import Home from './components/entry_page/Home.jsx'
 import Chat from './components/chat_page/Chat.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
+import Profile from './components/user_data/Profile.jsx'
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,14 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Home />
+  },
+  {
+    path: '/profile',
+    element: (
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    )
   },
   {
     path: '/chat',

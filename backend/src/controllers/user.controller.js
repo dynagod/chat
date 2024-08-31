@@ -60,7 +60,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
     const profile = await uploadOnCloudinary(profileLocalPath)
 
-    const user = await User.create({username, name, profile: profile?.url || "", email, password})
+    const user = await User.create({username, name, profile: profile?.url, email, password})
 
     const createdUser = await User.findById(user._id).select(
         "-password -refreshToken"
@@ -146,7 +146,11 @@ const logoutUser = asyncHandler(async (req, res) => {
 })
 
 const verifyToken = asyncHandler(async (req, res) => {
-    return res.status(200).json(new ApiResponse(200, "", "Authorised user"))
+    const userData = req.user;
+    if (!userData) throw new ApiError(500, "Something went wrong file fetching user data");
+    return res.status(200).json(new ApiResponse(200, userData, "Authorised user"));
 })
 
-export { registerUser, loginUser, logoutUser, verifyToken }
+const userData = asyncHandler(async (req, res) => {})
+
+export { registerUser, loginUser, logoutUser, verifyToken, userData }

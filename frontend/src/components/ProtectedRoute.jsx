@@ -10,7 +10,7 @@ const ProtectedRoute = ({ children }) => {
             await axios.get('/api/v1/user/verify-token', { withCredentials: true })
             .then((response) => {
                 setIsAuthenticated(true);
-                console.log(response);
+                console.log(response.data.data);
                 
             })
             .catch((error) => {

@@ -28,6 +28,16 @@ const userSchema = new Schema(
         },
         profile: {
             type: String,
+            default: "https://res.cloudinary.com/dc5doivto/image/upload/v1724850513/wopw0xs7nrcp7h5f7lie.jpg"
+        },
+        bio: {
+            type: String,
+            trim: true
+        },
+        status: {
+            type: String,
+            enum: ["online", "idle", "do not disturb", "invisible"],
+            default: "online"
         },
         password: {
             type: String,

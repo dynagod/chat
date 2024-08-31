@@ -6,10 +6,6 @@ const chatSchema = new Schema(
             type: String,
             trim: true
         },
-        isGroupChat: {
-            type: Boolean,
-            default: false
-        },
         users: [
             {
                 type: mongoose.Schema.Types.ObjectId,
@@ -19,7 +15,13 @@ const chatSchema = new Schema(
         latestMessage: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Message"
-        }
+        },
+        starredMessage: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Message"
+            }
+        ]
     },
     {
         timestamps: true
